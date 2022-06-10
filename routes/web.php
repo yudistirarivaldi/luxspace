@@ -22,12 +22,15 @@ Route::get('/carts', [FrontendController::class, 'carts'])->name('frontend.carts
 
 Route::get('/checkout/success', [FrontendController::class, 'success'])->name('frontend.success');
 
-Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+// Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+//     return view('dashboard');
+// })->name('dashboard');
+
+Route::middleware(['auth:sanctum', 'verified'])->name('dashboard.')->prefix('dashboard')->group(function () {
+    Route::get('/', [DashboardController::class, 'index'])->name('index');
+
+    Route::middleware(['admin'])->group(function() {
+
+    });
+
 });

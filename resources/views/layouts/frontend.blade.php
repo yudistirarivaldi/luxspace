@@ -26,6 +26,8 @@
 <body>
     <!-- Add your site or application content here -->
 
+    @include('sweetalert::alert')
+
     @include('component.frontend.navbar')
 
     @yield('content')

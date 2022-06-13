@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductGalleryRequest;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use App\Models\ProductGallery;
@@ -62,9 +63,24 @@ class ProductGalleryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductGalleryRequest $request, Product $product)
     {
-        //
+        $files = $request->file('files');
+
+        if($request->hasFile('files'))
+        {
+            foreach ($files as $file) {
+                $path = $file->store('public/gallery');
+
+                ProductGallery::create([
+                    'product_id' => $product->id,
+                    'url' => $path,
+
+                ]);
+            }
+        }
+        toast()->success('Berhasil menambahkan gambar');
+        return redirect()->route('dashboard.products.gallery.index', $product->id);
     }
 
     /**

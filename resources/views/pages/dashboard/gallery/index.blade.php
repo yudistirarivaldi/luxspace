@@ -56,7 +56,7 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Photo</th>
-                                <th>Poster</th>
+                                <th>Hero Picture</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\TransactionRequest;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use App\Models\Transaction;
+use App\Models\TransactionItem;
 
 class TransactionController extends Controller
 {
@@ -25,7 +27,7 @@ class TransactionController extends Controller
             ->addColumn('action', function($item){
                 return '
                     <a href="'. route('dashboard.transaction.show', $item->id) .'" class="bg-gray-800 text-white rounded-md px-2 py-1 mr-2">
-                        Show
+                        Detail
                     </a>
 
                     <a href="'. route('dashboard.transaction.edit', $item->id) .'" class="bg-gray-500 text-white rounded-md px-2 py-1 mr-2">
@@ -72,9 +74,24 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Transaction $transaction)
+    // untuk menampilkan data transaksi yang sudah di beli
     {
-        //
+       if(request()->ajax())
+       {
+            $query = TransactionItem::with(['product'])->where('transactions_id', $transaction->id);
+
+            return DataTables::of($query)
+                // masuk ke relasi product price
+                ->editColumn('product.price', function($item){
+                    return number_format($item->product->price);
+                })
+
+                ->make();
+       }
+
+         return view('pages.dashboard.transaction.show', compact('transaction'));
+
     }
 
     /**
@@ -83,10 +100,11 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Transaction $transaction)
     {
-        //
+        return view('pages.dashboard.transaction.edit', compact('transaction'));
     }
+
 
     /**
      * Update the specified resource in storage.
@@ -95,9 +113,15 @@ class TransactionController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TransactionRequest $request, Transaction $transaction)
     {
-        //
+        $data = $request->all();
+
+        $transaction->update($data);
+
+        toast('Update Status Transaksi Berhasil', 'success');
+        return redirect()->route('dashboard.transaction.index');
+
     }
 
     /**

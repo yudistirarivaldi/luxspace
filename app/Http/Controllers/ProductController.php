@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Models\Product;
+use App\Models\TransactionItem;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Str;
@@ -18,7 +19,7 @@ class ProductController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+     {
         if(request()->ajax())
         {
 
@@ -30,11 +31,9 @@ class ProductController extends Controller
                     <a href="'. route('dashboard.products.gallery.index', $item->id) .'" class="bg-gray-800 text-white rounded-md px-2 py-1 mr-2">
                         Gallery
                     </a>
-
                     <a href="'. route('dashboard.products.edit', $item->id) .'" class="bg-gray-500 text-white rounded-md px-2 py-1 mr-2">
                         Edit
                     </a>
-
                     <form class="inline-block" action="'. route('dashboard.products.destroy', $item->id) .'" method="POST">
                         <button class="bg-red-500 text-white rounded-md px-2 py-1 mr-2">
                             Hapus
@@ -92,7 +91,7 @@ class ProductController extends Controller
      */
     public function show($id)
     {
-        //
+        return abort(404);
     }
 
     /**

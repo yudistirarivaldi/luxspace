@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -79,9 +80,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(User $user)
     {
-        //
+        return view('pages.dashboard.user.edit', compact('user'));
     }
 
     /**
@@ -91,9 +92,16 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UserRequest $request, User $user)
     {
-        //
+        $data = $request->all();
+
+        $user->update($data);
+
+        toast('Data berhasil diubah', 'success');
+
+        return redirect()->route('dashboard.user.index');
+
     }
 
     /**
@@ -102,8 +110,11 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+
+        toast('Data berhasil dihapus', 'success');
+        return redirect()->route('dashboard.user.index');
     }
 }

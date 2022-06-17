@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Product &raquo; {{ $product->name }} &raquo; Edit
+            User / {{ $user->name }} / Edit
         </h2>
     </x-slot>
 
@@ -27,8 +27,8 @@
                     </div>
                 @endif
 
-                <form action="{{ route('dashboard.products.update', $product->id) }}" method="POST"
-                    class="w-full" enctype="multipart/form-data">
+                <form action="{{ route('dashboard.user.update', $user->id) }}" method="POST" class="w-full"
+                    enctype="multipart/form-data">
                     @csrf
                     @method('PUT')
 
@@ -36,7 +36,7 @@
                         <div class="w-full px-3">
                             <label
                                 class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Name</label>
-                            <input type="text" value="{{ old('name') ?? $product->name }} " name="name"
+                            <input type="text" value="{{ old('name') ?? $user->name }} " name="name"
                                 class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-y-gray-500"
                                 placeholder="Product Name">
                         </div>
@@ -45,20 +45,25 @@
                     <div class="flex flex-wrap -mx-3 mb-6">
                         <div class="w-full px-3">
                             <label
-                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Description</label>
-                            <textarea name="description"
-                                class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-y-gray-500"> {!! old('description') ?? $product->description !!}
-                            </textarea>
+                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Email</label>
+                            <input type="text" value="{{ old('email') ?? $user->email }}" name="email"
+                                class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-y-gray-500"
+                                placeholder="Email">
                         </div>
                     </div>
 
                     <div class="flex flex-wrap -mx-3 mb-6">
                         <div class="w-full px-3">
                             <label
-                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">Price</label>
-                            <input type="number" value="{{ old('price') ?? $product->price }}" name="price"
-                                class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-y-gray-500"
-                                placeholder="Product Price">
+                                class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2">ROLES</label>
+                            <select name="roles" id=""
+                                class="block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-y-gray-500">
+
+                                <option value="{{ $user->roles }}">{{ $user->roles }}</option>
+                                <option disabled>---PILIH ROLES---</option>
+                                <option value="ADMIN">ADMIN</option>
+                                <option value="USER">USER</option>
+                            </select>
                         </div>
                     </div>
 
@@ -66,7 +71,7 @@
                         <div class="w-full px-3">
                             <button type="submit"
                                 class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-lg">
-                                Edit Product
+                                Edit User
                             </button>
                         </div>
                     </div>
@@ -79,8 +84,5 @@
             </div>
         </div>
     </div>
-    <script src="https://cdn.ckeditor.com/4.19.0/standard/ckeditor.js"></script>
-    <script>
-        CKEDITOR.replace('description');
-    </script>
+
 </x-app-layout>

@@ -5,6 +5,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProductGalleryController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\MyTransactionController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +37,10 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (){
     Route::post('/checkout', [FrontendController::class, 'checkout'])->name('frontend.checkout');
 
     Route::get('/checkout/success', [FrontendController::class, 'success'])->name('frontend.success');
+
+    // untuk transaksi user
+    Route::resource('my-transaction', MyTransactionController::class);
+
 });
 
 
@@ -47,6 +52,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (){
 Route::middleware(['auth:sanctum', 'verified'])->name('dashboard.')->prefix('dashboard')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('index');
 
+    Route::resource('my-transaction', MyTransactionController::class);
+
+    // hanya admin yang bisa akses
     Route::middleware(['admin'])->group(function() {
         Route::resource('products', ProductController::class);
         Route::resource('products.gallery', ProductGalleryController::class)->shallow()->only([

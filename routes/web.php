@@ -23,9 +23,22 @@ Route::get('/', [FrontendController::class, 'index'])->name('frontend.index');
 
 Route::get('/details/{slug}', [FrontendController::class, 'details'])->name('frontend.details');
 
-Route::get('/carts', [FrontendController::class, 'carts'])->name('frontend.carts');
+Route::middleware(['auth:sanctum', 'verified'])->group(function (){
 
-Route::get('/checkout/success', [FrontendController::class, 'success'])->name('frontend.success');
+    Route::get('/carts', [FrontendController::class, 'carts'])->name('frontend.carts');
+
+    // untuk membuat order cart
+    Route::post('/carts/{id}', [FrontendController::class, 'cartAdd'])->name('cart-add');
+
+    // Route untuk delete order cart
+   Route::delete('/carts/{id}', [FrontendController::class, 'cartDelete'])->name('cart-delete');
+
+    Route::post('/checkout', [FrontendController::class, 'checkout'])->name('frontend.checkout');
+
+    Route::get('/checkout/success', [FrontendController::class, 'success'])->name('frontend.success');
+});
+
+
 
 // Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
 //     return view('dashboard');
